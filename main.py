@@ -4,11 +4,13 @@ from optparse import OptionParser
 
 def parseFile(fileName):
     result = {}
-    for line in open(fileName, "r"):
+    input = open(fileName, "r").readlines()
+    result["method"] = input[0].split(" ")[0]
+    for line in input[1:]:
         if line.find(":") != -1:
-            result[line.split(":")[0]] = "".join(line.split(":")[1:])
+            result[line.split(":")[0]] = line.split(": ")[1].strip()
         else:
-            result["body"] = line
+            result["body"] = line.strip()
     return result
 
 def printFile(parsedFile):
@@ -16,6 +18,10 @@ def printFile(parsedFile):
 The given SIP message is a request with:
 request-uri: """
     result += parsedFile["To"]
+    excluded_fields = ["To", "body", "method"]
+    result += """
+method: """
+    result += parsedFile["method"]
     """
         method: 
         headers:

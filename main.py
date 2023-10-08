@@ -65,8 +65,13 @@ def validateToField(parsedFile):
         return ""
     return "Error: to field is not a valid SIP value as required by RFC section 8.1.1.2"
 
+def validateFromField(parsedFile):
+    if parsedFile["from"].find(";tag=") != -1:
+        return ""
+    return "Error: from field does not contain required tag parameter as required by RFC section 8.1.1.3"
+
 def validate(parsedFile):
-    result = validateRequestUri(parsedFile) + validateMandatoryFields(parsedFile) + validateToField(parsedFile)
+    result = validateRequestUri(parsedFile) + validateMandatoryFields(parsedFile) + validateToField(parsedFile) + validateFromField(parsedFile)
     if result == "":
         print("The request has been verified and no issues were found.")
     else:

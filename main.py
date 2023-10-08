@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from optparse import OptionParser
+import re
 
 def parseFile(fileName):
     result = {}
@@ -51,13 +52,21 @@ def validateMandatoryFields(parsedFile):
 def validateRequestUri(parsedFile):
     if (parsedFile["method"] == "REGISTER"):
         return ""
+    if (parsedFile["request-uri"].find("<") == -1):
+        return "" #pass-through for SIP format error that will be caught in a separate function
     if (parsedFile["request-uri"] == parsedFile["to"].split("<")[1][:-1]):
         return ""
     else:
         return "Error: request-uri does not match the to field despite the method not being REGISTER, as required by RFC section 8.1.1.1\n"
+    
+def validateToField(parsedFile):
+    to_field_pattern = r'^(?:[^<]*\s*)?<sip:[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+>(;tag=[a-zA-Z0-9-]+)?$'
+    if re.match(to_field_pattern, parsedFile["to"]):
+        return ""
+    return "Error: to field is not a valid SIP value as required by RFC section 8.1.1.2"
 
 def validate(parsedFile):
-    result = validateRequestUri(parsedFile) + validateMandatoryFields(parsedFile)
+    result = validateRequestUri(parsedFile) + validateMandatoryFields(parsedFile) + validateToField(parsedFile)
     if result == "":
         print("The request has been verified and no issues were found.")
     else:

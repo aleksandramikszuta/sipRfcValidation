@@ -40,16 +40,24 @@ def printHeaderExists(header, parsedFile):
     else:
         print("Header " + header + " is not present in the file")
 
+def validateMandatoryFields(parsedFile):
+    result = ""
+    mandatoryFields = ["to", "from", "cseq", "call-id", "max-forwards", "via"]
+    for field in mandatoryFields:
+        if field not in parsedFile:
+            result += "Error: mandatory field as required by RFC section 8.1.1 is missing: " + field + "\n"
+    return result
+
 def validateRequestUri(parsedFile):
     if (parsedFile["method"] == "REGISTER"):
         return ""
     if (parsedFile["request-uri"] == parsedFile["to"].split("<")[1][:-1]):
         return ""
     else:
-        return "Error: request-uri does not match the to field despite the method not being REGISTER, as required by RFC section 8.1.1.1"
+        return "Error: request-uri does not match the to field despite the method not being REGISTER, as required by RFC section 8.1.1.1\n"
 
 def validate(parsedFile):
-    result = validateRequestUri(parsedFile)
+    result = validateRequestUri(parsedFile) + validateMandatoryFields(parsedFile)
     if result == "":
         print("The request has been verified and no issues were found.")
     else:

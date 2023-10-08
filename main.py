@@ -6,6 +6,7 @@ def parseFile(fileName):
     result = {}
     input = open(fileName, "r").readlines()
     result["method"] = input[0].split(" ")[0]
+    result["request-uri"] = input[0].split(" ")[1]
     for line in input[1:]:
         if line.find(":") != -1:
             result[line.split(":")[0].lower()] = line.split(": ")[1].strip()
@@ -39,8 +40,22 @@ def printHeaderExists(header, parsedFile):
     else:
         print("Header " + header + " is not present in the file")
 
+def validateRequestUri(parsedFile):
+    if (parsedFile["method"] == "REGISTER"):
+        return ""
+    if (parsedFile["request-uri"] == parsedFile["to"].split("<")[1][:-1]):
+        return ""
+    else:
+        return "Error: request-uri does not match the to field despite the method not being REGISTER, as required by RFC section 8.1.1.1"
+
 def validate(parsedFile):
-    print("The request has been verified and no issues were found.")
+    result = validateRequestUri(parsedFile)
+    if result == "":
+        print("The request has been verified and no issues were found.")
+    else:
+        print("The verification of the request failed due to the following reason(s):")
+        print(result)
+
 
 def main():
     parser = OptionParser()

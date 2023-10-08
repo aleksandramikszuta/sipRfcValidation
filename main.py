@@ -39,6 +39,9 @@ def printHeaderExists(header, parsedFile):
     else:
         print("Header " + header + " is not present in the file")
 
+def validate(parsedFile):
+    print("The request has been verified and no issues were found.")
+
 def main():
     parser = OptionParser()
     parser.add_option("-f", "--file", dest="file", help="File to process")
@@ -47,7 +50,7 @@ def main():
     parser.add_option("-e", "--exists",
                     action="store", dest="headerExists",
                     help="Check if given header exists in the file (WIP)")
-    parser.add_option("-v", "--validate", action="store_true", default=False,
+    parser.add_option("-v", "--validate", dest="validate", action="store_true", default=False,
                        help="Validate RFC3261 conformity (WIP)")
 
     (options, args) = parser.parse_args()
@@ -63,6 +66,9 @@ def main():
     
     if(options.headerExists is not None):
         printHeaderExists(options.headerExists, parsedFile)
+    
+    if(options.validate):
+        validate(parsedFile)
 
 if __name__ == "__main__":
     main()

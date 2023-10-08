@@ -8,7 +8,7 @@ def parseFile(fileName):
     result["method"] = input[0].split(" ")[0]
     for line in input[1:]:
         if line.find(":") != -1:
-            result[line.split(":")[0]] = line.split(": ")[1].strip()
+            result[line.split(":")[0].lower()] = line.split(": ")[1].strip()
         else:
             result["body"] = line.strip()
     return result
@@ -17,8 +17,8 @@ def printFile(parsedFile):
     result = """
 The given SIP message is a request with:
 request-uri: """
-    result += parsedFile["To"]
-    excluded_fields = ["To", "body", "method"]
+    result += parsedFile["to"]
+    excluded_fields = ["to", "body", "method"]
     result += """
 method: """
     result += parsedFile["method"]

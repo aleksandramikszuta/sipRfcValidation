@@ -33,6 +33,12 @@ headers:"""
 and body: """ + parsedFile["body"]
     print(result)
 
+def printHeaderExists(header, parsedFile):
+    if header in parsedFile:
+        print("Header " + header + " is present with value: " + parsedFile[header])
+    else:
+        print("Header " + header + " is not present in the file")
+
 def main():
     parser = OptionParser()
     parser.add_option("-f", "--file", dest="file", help="File to process")
@@ -54,6 +60,9 @@ def main():
 
     if(options.print):
         printFile(parsedFile)
+    
+    if(options.headerExists is not None):
+        printHeaderExists(options.headerExists, parsedFile)
 
 if __name__ == "__main__":
     main()

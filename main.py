@@ -22,14 +22,15 @@ request-uri: """
     result += """
 method: """
     result += parsedFile["method"]
-    """
-        method: 
-        headers:
-            : 
-            : 
-            <...>: <...>
-        and body:
-    """
+    result += """
+headers:"""
+    for (key, value) in parsedFile.items():
+        if key in excluded_fields:
+            continue
+        result += """
+  """ + key + ": " + value
+    result += """
+and body: """ + parsedFile["body"]
     print(result)
 
 def main():

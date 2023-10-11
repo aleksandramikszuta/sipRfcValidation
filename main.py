@@ -83,12 +83,12 @@ def main():
     parser = OptionParser()
     parser.add_option("-f", "--file", dest="file", help="File to process")
     parser.add_option("-p", "--print", dest="print", action="store_true", default=False,
-                    help="Print file contents (WIP)")
+                    help="Print file contents")
     parser.add_option("-e", "--exists",
                     action="store", dest="headerExists",
-                    help="Check if given header exists in the file (WIP)")
+                    help="Check if given header exists in the file")
     parser.add_option("-v", "--validate", dest="validate", action="store_true", default=False,
-                       help="Validate RFC3261 conformity (WIP)")
+                       help="Validate RFC3261 conformity")
 
     (options, args) = parser.parse_args()
 

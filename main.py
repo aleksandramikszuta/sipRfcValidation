@@ -52,7 +52,7 @@ def validateMandatoryFields(parsedFile):
 def validateRequestUri(parsedFile):
     if (parsedFile["method"] == "REGISTER"):
         return ""
-    if (parsedFile["request-uri"].find("<") == -1):
+    if (parsedFile["to"].find("<") == -1):
         return "" #pass-through for SIP format error that will be caught in a separate function
     if (parsedFile["request-uri"] == parsedFile["to"].split("<")[1][:-1]):
         return ""
@@ -63,12 +63,12 @@ def validateToField(parsedFile):
     to_field_pattern = r'^(?:[^<]*\s*)?<sip:[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+>(;tag=[a-zA-Z0-9-]+)?$'
     if re.match(to_field_pattern, parsedFile["to"]):
         return ""
-    return "Error: to field is not a valid SIP value as required by RFC section 8.1.1.2"
+    return "Error: to field is not a valid SIP value as required by RFC section 8.1.1.2\n"
 
 def validateFromField(parsedFile):
     if parsedFile["from"].find(";tag=") != -1:
         return ""
-    return "Error: from field does not contain required tag parameter as required by RFC section 8.1.1.3"
+    return "Error: from field does not contain required tag parameter as required by RFC section 8.1.1.3\n"
 
 def validate(parsedFile):
     result = validateRequestUri(parsedFile) + validateMandatoryFields(parsedFile) + validateToField(parsedFile) + validateFromField(parsedFile)

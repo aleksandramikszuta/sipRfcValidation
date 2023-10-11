@@ -36,6 +36,7 @@ and body: """ + parsedFile["body"]
     print(result)
 
 def printHeaderExists(header, parsedFile):
+    header = header.lower()
     if header in parsedFile:
         print("Header " + header + " is present with value: " + parsedFile[header])
     else:

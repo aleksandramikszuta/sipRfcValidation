@@ -19,8 +19,8 @@ def printFile(parsedFile):
     result = """
 The given SIP message is a request with:
 request-uri: """
-    result += parsedFile["to"]
-    excluded_fields = ["to", "body", "method"]
+    result += parsedFile["request-uri"]
+    excluded_fields = ["request-uri", "body", "method"]
     result += """
 method: """
     result += parsedFile["method"]
